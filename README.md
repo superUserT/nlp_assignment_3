@@ -52,42 +52,58 @@ Use the following raw string snippet for your code execution and verification:
 python
 raw_text = "The intensive-care patients are recovering surprisingly quickly. Doctors are analyzing data
 daily!"
+
 1. Conceptual Design and Pipeline Constraints [5 Marks]
+
 • 1.1 Draw a conceptual block diagram detailing the exact sequence of data
 transformations from raw_text to your final output. (2)
 • 1.2 In text preprocessing, a standard pipeline applies stopword removal before
 lemmatisation, or vice versa. Discuss the architectural trade-off of both approaches
 regarding computational efficiency and Parts-of-Speech (POS) tagging dependency.
 Justify which order is optimal for your pipeline. (3)
+
 2. Custom Tokenisation and Case Normalisation (6)
+
 Write a Python function named custom_tokenize(text) that accepts a raw string and returns a
 clean list of lowercased tokens.
+
 • Constraint: You cannot use high-level NLP libraries (like NLTK, SpaCy, or HuggingFace)
 for this specific task. You must rely solely on native Python string methods or the built-in
 re (Regular Expressions) engine.
+
 • Your function must convert all text to lowercase, strip trailing punctuation marks, and
 handle hyphenated entities (e.g., "intensive-care"). Include inline code comments
 explicitly stating your linguistic design choice regarding whether you split hyphenated
 words or kept them bound as single tokens.
+
 3. Deterministic Stopword Filtering (4)
+
 • Write a Python function named remove_stopwords(token_list, custom_stopwords) that
 strips structural words from your token stream.
 COS4861/101/0/2026
-7
+
 • Define a hardcoded python set containing at least 5 standard English grammatical
 stopwords relevant to the target snippet (e.g., "the", "are").
+
 • Optimise this function using a list comprehension or generator expression to filter tokens
 efficiently.
+
 4. Context-Aware Lemmatisation (6)
+
 • Write a Python function named lemmatize_tokens(token_list) using a reputable NLP
 framework of your choice (such as nltk with WordNetLemmatizer or spacy).
+
 • Crucial Requirement: A naive lemmatiser defaults to processing tokens as nouns, which
 fails on verbs or adverbs (e.g., leaving "recovering" or "analyzing" unchanged). Your
 code must programmatically determine or pass the correct POS tags to the lemmatiser.
+
 • Ensure your final output correctly maps words to their base linguistic lemmas (e.g.,
 "patients" → "patient", "recovering" → "recover").
+
 5. Pipeline Orchestration and State Verification (4)
+
 • Write a master execution script that chains your functions together sequentially:
 raw_text →custom_tokenize → remove_stopwords → lemmatize_tokens
+
 • Your script must print the intermediate output list at every stage of the process to prove
 successful state mutation.
