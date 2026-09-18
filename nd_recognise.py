@@ -20,6 +20,10 @@ class NFSA:
         self.accept_states = accept_states
         self.transitions = transitions
 
+    def __repr__(self) -> str:
+        return (f"NFSA(states={self.states}, start_state={self.start_state}, "
+                f"accept_states={self.accept_states}, transitions={self.transitions})")
+
 def nd_recognize(
     tape: str, machine: NFSA, strategy: Literal["DFS", "BFS"] = "DFS"
 ) -> bool:
@@ -31,31 +35,31 @@ def nd_recognize(
 
     while agenda:
         if strategy == "DFS":
-            current_node, tape_ptr = agenda.pop()
+            current_node, tape_pointer_location = agenda.pop()
         elif strategy == "BFS":
-            current_node, tape_ptr = agenda.popleft()
+            current_node, tape_pointer_location = agenda.popleft()
         else:
             raise ValueError("Strategy must be 'DFS' or 'BFS'.")
 
-        if tape_ptr == len(tape) and current_node in machine.accept_states:
+        if tape_pointer_location == len(tape) and current_node in machine.accept_states:
             return True
 
-        eps_key = (current_node, 'ε')
-        if eps_key in machine.transitions:
-            for next_state in machine.transitions[eps_key]:
-                agenda.append((next_state, tape_ptr))
+        epsilon_key = (current_node, 'ε')
+        if epsilon_key in machine.transitions:
+            for next_state in machine.transitions[epsilon_key]:
+                agenda.append((next_state, tape_pointer_location))
 
-        if tape_ptr < len(tape):
-            sym_key = (current_node, tape[tape_ptr])
-            if sym_key in machine.transitions:
-                for next_state in machine.transitions[sym_key]:
-                    agenda.append((next_state, tape_ptr + 1))
+        if tape_pointer_location < len(tape):
+            symbol_key = (current_node, tape[tape_pointer_location])
+            if symbol_key in machine.transitions:
+                for next_state in machine.transitions[symbol_key]:
+                    agenda.append((next_state, tape_pointer_location + 1))
 
     return False
 
 def compile_sheeptalk_nfsa() -> NFSA:
     """
-    Compiles the textbook NFSA for 'baa*!' into the internal data structure[cite: 1].
+    Compiles the textbook NFSA for 'baa*!' into the internal data structure.
     """
     transitions = {
         (0, 'b'): [1],
@@ -64,3 +68,12 @@ def compile_sheeptalk_nfsa() -> NFSA:
         (3, '!'): [4]
     }
     return NFSA(states={0, 1, 2, 3, 4}, start_state=0, accept_states={4}, transitions=transitions)
+
+
+def __repr__(self) -> str:
+    return (f"NFSA(states={self.states}, start_state={self.start_state}, "
+            f"accept_states={self.accept_states}, transitions={self.transitions})")
+
+
+if __name__ == "__main__":
+    print(compile_sheeptalk_nfsa())
