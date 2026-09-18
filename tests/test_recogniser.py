@@ -4,7 +4,6 @@ from nd_recognise import NFSA, compile_sheeptalk_nfsa, nd_recognize
 class TestNFSARecognizer(unittest.TestCase):
 
     def setUp(self):
-        # Instantiate the machine once before tests run
         self.machine = compile_sheeptalk_nfsa()
 
     def test_dfs_accepts_valid_string(self):

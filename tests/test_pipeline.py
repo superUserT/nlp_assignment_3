@@ -15,7 +15,6 @@ class TestClinicalPipeline(unittest.TestCase):
         self.assertEqual(remove_stopwords(tokens), expected)
 
     def test_lemmatize_inflectional_verbs(self):
-        # Testing that 'recovering' successfully morphs to 'recover'
         tokens = ["patients", "recovering"]
         expected = ["patient", "recover"]
         self.assertEqual(lemmatize_tokens(tokens), expected)
