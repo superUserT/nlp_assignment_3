@@ -16,9 +16,6 @@ def remove_stopwords(token_list: List[str]) -> List[str]:
     return [token for token in token_list if token not in custom_stopwords]
 
 def get_wordnet_pos(treebank_tag: str) -> str:
-    """
-    Maps complex Penn Treebank POS tags to WordNet morphological constants[cite: 1].
-    """
     if treebank_tag.startswith('J'):
         return wn.ADJ
     elif treebank_tag.startswith('V'):
@@ -33,9 +30,29 @@ def lemmatise_tokens(token_list: List[str]) -> List[str]:
     lemmatiser = WordNetLemmatizer()
     tagged_tokens = pos_tag(token_list)
 
-    lemmatized_output = []
+    lemmatised_output = []
     for word, tag in tagged_tokens:
         wordnet_tag = get_wordnet_pos(tag)
-        lemmatized_output.append(lemmatiser.lemmatize(word, wordnet_tag))
+        lemmatised_output.append(lemmatiser.lemmatize(word, wordnet_tag))
 
-    return lemmatized_output
+    return lemmatised_output
+
+def run_pipeline(raw_text: str) -> List[str]:
+    tokens = custom_tokenise(raw_text)
+    print(f"1. Tokenised:{tokens}")
+
+    filtered = remove_stopwords(tokens)
+    print(f"2. Stopwords removed:{filtered}")
+
+    lemmas = lemmatise_tokens(filtered)
+    print(f"3. Lemmatised:{lemmas}")
+
+    return lemmas
+
+if __name__ == "__main__":
+    raw_text = (
+        "The intensive-care patients are recovering surprisingly quickly. "
+        "Doctors are analyzing data daily!"
+    )
+    print(f"0. Raw text: {raw_text!r}")
+    run_pipeline(raw_text)
