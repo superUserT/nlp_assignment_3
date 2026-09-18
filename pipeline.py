@@ -6,11 +6,6 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet as wn
 from nltk import pos_tag
 
-# Ensure morphological corpora are available (usually handled in environment setup)
-# nltk.download('punkt', quiet=True)
-# nltk.download('averaged_perceptron_tagger', quiet=True)
-# nltk.download('wordnet', quiet=True)
-
 def custom_tokenize(text: str) -> List[str]:
     """
     Binds hyphenated clinical jargon (e.g., 'intensive-care') as single semantic entities[cite: 1].

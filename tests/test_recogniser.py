@@ -54,7 +54,6 @@ class TestNFSARecognizer(unittest.TestCase):
         self.assertTrue(nd_recognize("", machine))
 
     def test_nondeterministic_branch_explores_all_options(self):
-        # Only the second branch out of state 0 on 'a' reaches acceptance.
         machine = NFSA(
             states={0, 1, 2},
             start_state=0,

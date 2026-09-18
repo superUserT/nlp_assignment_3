@@ -30,7 +30,6 @@ def nd_recognize(
     agenda.append((machine.start_state, 0))
 
     while agenda:
-        # Stack behavior for DFS, Queue behavior for BFS[cite: 1]
         if strategy == "DFS":
             current_node, tape_ptr = agenda.pop()
         elif strategy == "BFS":
@@ -41,13 +40,11 @@ def nd_recognize(
         if tape_ptr == len(tape) and current_node in machine.accept_states:
             return True
 
-        # 1. Explore Epsilon (ε) transitions[cite: 1]
         eps_key = (current_node, 'ε')
         if eps_key in machine.transitions:
             for next_state in machine.transitions[eps_key]:
                 agenda.append((next_state, tape_ptr))
 
-        # 2. Explore symbol-consuming transitions[cite: 1]
         if tape_ptr < len(tape):
             sym_key = (current_node, tape[tape_ptr])
             if sym_key in machine.transitions:
@@ -63,7 +60,7 @@ def compile_sheeptalk_nfsa() -> NFSA:
     transitions = {
         (0, 'b'): [1],
         (1, 'a'): [2],
-        (2, 'a'): [2, 3],  # Non-deterministic branch point[cite: 1]
+        (2, 'a'): [2, 3], 
         (3, '!'): [4]
     }
     return NFSA(states={0, 1, 2, 3, 4}, start_state=0, accept_states={4}, transitions=transitions)
