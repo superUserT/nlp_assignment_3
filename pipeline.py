@@ -1,4 +1,6 @@
 import re
+from typing import List
+
 import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet as wn
@@ -9,7 +11,7 @@ from nltk import pos_tag
 # nltk.download('averaged_perceptron_tagger', quiet=True)
 # nltk.download('wordnet', quiet=True)
 
-def custom_tokenize(text):
+def custom_tokenize(text: str) -> List[str]:
     """
     Binds hyphenated clinical jargon (e.g., 'intensive-care') as single semantic entities[cite: 1].
     """
@@ -17,14 +19,14 @@ def custom_tokenize(text):
     pattern = r'\b[a-z0-9]+(?:-[a-z0-9]+)*\b'
     return re.findall(pattern, text_lower)
 
-def remove_stopwords(token_list):
+def remove_stopwords(token_list: List[str]) -> List[str]:
     """
     Strips high-frequency structural stopwords using hash table lookup[cite: 1].
     """
     custom_stopwords = {"the", "are", "is", "in", "and", "of", "to", "a"}
     return [token for token in token_list if token not in custom_stopwords]
 
-def get_wordnet_pos(treebank_tag):
+def get_wordnet_pos(treebank_tag: str) -> str:
     """
     Maps complex Penn Treebank POS tags to WordNet morphological constants[cite: 1].
     """
@@ -38,7 +40,7 @@ def get_wordnet_pos(treebank_tag):
         return wn.NOUN
     return wn.NOUN
 
-def lemmatize_tokens(token_list):
+def lemmatize_tokens(token_list: List[str]) -> List[str]:
     """
     Context-aware lemmatizer that maps tokens to base linguistic lemmas using POS tags[cite: 1].
     """

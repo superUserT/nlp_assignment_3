@@ -1,20 +1,32 @@
 from collections import deque
+from typing import Dict, Hashable, List, Literal, Set, Tuple
+
+State = Hashable
+Transitions = Dict[Tuple[State, str], List[State]]
 
 class NFSA:
     """
     Object-oriented representation of a Non-Deterministic Finite State Automaton.
     """
-    def __init__(self, states, start_state, accept_states, transitions):
+    def __init__(
+        self,
+        states: Set[State],
+        start_state: State,
+        accept_states: Set[State],
+        transitions: Transitions,
+    ) -> None:
         self.states = states
         self.start_state = start_state
         self.accept_states = accept_states
         self.transitions = transitions
 
-def nd_recognize(tape, machine, strategy="DFS"):
+def nd_recognize(
+    tape: str, machine: NFSA, strategy: Literal["DFS", "BFS"] = "DFS"
+) -> bool:
     """
     Executes the ND-RECOGNIZE state-space search algorithm using a double-ended queue[cite: 1].
     """
-    agenda = deque()
+    agenda: deque[Tuple[State, int]] = deque()
     agenda.append((machine.start_state, 0))
 
     while agenda:
@@ -44,7 +56,7 @@ def nd_recognize(tape, machine, strategy="DFS"):
 
     return False
 
-def compile_sheeptalk_nfsa():
+def compile_sheeptalk_nfsa() -> NFSA:
     """
     Compiles the textbook NFSA for 'baa*!' into the internal data structure[cite: 1].
     """
