@@ -24,7 +24,7 @@ class NFSA:
         return (f"NFSA(states={self.states}, start_state={self.start_state}, "
                 f"accept_states={self.accept_states}, transitions={self.transitions})")
 
-def nd_recognize(
+def nd_recognise(
     tape: str, machine: NFSA, strategy: Literal["DFS", "BFS"] = "DFS"
 ) -> bool:
     """

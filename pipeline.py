@@ -6,18 +6,12 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet as wn
 from nltk import pos_tag
 
-def custom_tokenize(text: str) -> List[str]:
-    """
-    Binds hyphenated clinical jargon (e.g., 'intensive-care') as single semantic entities[cite: 1].
-    """
+def custom_tokenise(text: str) -> List[str]:
     text_lower = text.lower()
-    pattern = r'\b[a-z0-9]+(?:-[a-z0-9]+)*\b'
-    return re.findall(pattern, text_lower)
+    match_single_hyphen = r'\b[a-z0-9]+(?:-[a-z0-9]+)*\b'
+    return re.findall(match_single_hyphen, text_lower)
 
 def remove_stopwords(token_list: List[str]) -> List[str]:
-    """
-    Strips high-frequency structural stopwords using hash table lookup[cite: 1].
-    """
     custom_stopwords = {"the", "are", "is", "in", "and", "of", "to", "a"}
     return [token for token in token_list if token not in custom_stopwords]
 
@@ -35,16 +29,13 @@ def get_wordnet_pos(treebank_tag: str) -> str:
         return wn.NOUN
     return wn.NOUN
 
-def lemmatize_tokens(token_list: List[str]) -> List[str]:
-    """
-    Context-aware lemmatizer that maps tokens to base linguistic lemmas using POS tags[cite: 1].
-    """
-    lemmatizer = WordNetLemmatizer()
+def lemmatise_tokens(token_list: List[str]) -> List[str]:
+    lemmatiser = WordNetLemmatizer()
     tagged_tokens = pos_tag(token_list)
 
     lemmatized_output = []
     for word, tag in tagged_tokens:
         wordnet_tag = get_wordnet_pos(tag)
-        lemmatized_output.append(lemmatizer.lemmatize(word, wordnet_tag))
+        lemmatized_output.append(lemmatiser.lemmatize(word, wordnet_tag))
 
     return lemmatized_output

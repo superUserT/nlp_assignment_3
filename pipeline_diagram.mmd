@@ -1,0 +1,27 @@
+flowchart TD
+    A["<b>raw_text</b><br/>'The intensive-care patients are recovering<br/>surprisingly quickly. Doctors are analyzing data daily!'"]
+
+    subgraph S1["Stage 1: custom_tokenize (re only, no NLTK)"]
+        B1["Lowercase<br/>text.lower()"]
+        B2["Regex extraction<br/>\\b[a-z0-9]+(?:-[a-z0-9]+)*\\b<br/>drops punctuation, keeps hyphenated terms bound"]
+        B1 --> B2
+    end
+
+    C["<b>tokens</b> (12)<br/>the, intensive-care, patients, are, recovering, surprisingly,<br/>quickly, doctors, are, analyzing, data, daily"]
+
+    subgraph S2["Stage 2: remove_stopwords"]
+        D1["Set lookup filter (list comprehension)<br/>{the, are, is, in, and, of, to, a}"]
+    end
+
+    E["<b>filtered tokens</b> (9)<br/>intensive-care, patients, recovering, surprisingly,<br/>quickly, doctors, analyzing, data, daily"]
+
+    subgraph S3["Stage 3: lemmatize_tokens (NLTK)"]
+        F1["POS tagging<br/>pos_tag: Penn Treebank tags"]
+        F2["Tag mapping<br/>get_wordnet_pos: J→ADJ, V→VERB, R→ADV, N→NOUN"]
+        F3["WordNetLemmatizer<br/>lemmatize(word, wordnet_pos)"]
+        F1 --> F2 --> F3
+    end
+
+    G["<b>final output</b> (9 lemmas)<br/>intensive-care, patient, recover, surprisingly,<br/>quickly, doctor, analyze, data, daily"]
+
+    A --> S1 --> C --> S2 --> E --> S3 --> G

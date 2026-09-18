@@ -1,5 +1,5 @@
 import unittest
-from nd_recognise import NFSA, compile_sheeptalk_nfsa, nd_recognize
+from nd_recognise import NFSA, compile_sheeptalk_nfsa, nd_recognise
 
 class TestNFSARecognizer(unittest.TestCase):
 
@@ -7,14 +7,14 @@ class TestNFSARecognizer(unittest.TestCase):
         self.machine = compile_sheeptalk_nfsa()
 
     def test_dfs_accepts_valid_string(self):
-        self.assertTrue(nd_recognize("baa!", self.machine, strategy="DFS"))
+        self.assertTrue(nd_recognise("baa!", self.machine, strategy="DFS"))
 
     def test_bfs_accepts_valid_string(self):
-        self.assertTrue(nd_recognize("baaaa!", self.machine, strategy="BFS"))
+        self.assertTrue(nd_recognise("baaaa!", self.machine, strategy="BFS"))
 
     def test_rejects_invalid_strings(self):
-        self.assertFalse(nd_recognize("ba!", self.machine, strategy="DFS"))
-        self.assertFalse(nd_recognize("xyz", self.machine, strategy="BFS"))
+        self.assertFalse(nd_recognise("ba!", self.machine, strategy="DFS"))
+        self.assertFalse(nd_recognise("xyz", self.machine, strategy="BFS"))
 
     def test_strategies_agree_on_many_inputs(self):
         cases = {
@@ -27,15 +27,15 @@ class TestNFSARecognizer(unittest.TestCase):
             for strategy in ("DFS", "BFS"):
                 with self.subTest(tape=tape, strategy=strategy):
                     self.assertEqual(
-                        nd_recognize(tape, self.machine, strategy=strategy), expected
+                        nd_recognise(tape, self.machine, strategy=strategy), expected
                     )
 
     def test_default_strategy_is_dfs(self):
-        self.assertTrue(nd_recognize("baa!", self.machine))
+        self.assertTrue(nd_recognise("baa!", self.machine))
 
     def test_invalid_strategy_raises(self):
         with self.assertRaises(ValueError):
-            nd_recognize("baa!", self.machine, strategy="A*")
+            nd_recognise("baa!", self.machine, strategy="A*")
 
     def test_epsilon_transition_is_followed(self):
         machine = NFSA(
@@ -46,12 +46,12 @@ class TestNFSARecognizer(unittest.TestCase):
         )
         for strategy in ("DFS", "BFS"):
             with self.subTest(strategy=strategy):
-                self.assertTrue(nd_recognize("a", machine, strategy=strategy))
-                self.assertFalse(nd_recognize("", machine, strategy=strategy))
+                self.assertTrue(nd_recognise("a", machine, strategy=strategy))
+                self.assertFalse(nd_recognise("", machine, strategy=strategy))
 
     def test_empty_tape_accepted_when_start_is_accepting(self):
         machine = NFSA({0}, 0, {0}, {})
-        self.assertTrue(nd_recognize("", machine))
+        self.assertTrue(nd_recognise("", machine))
 
     def test_nondeterministic_branch_explores_all_options(self):
         machine = NFSA(
@@ -62,7 +62,7 @@ class TestNFSARecognizer(unittest.TestCase):
         )
         for strategy in ("DFS", "BFS"):
             with self.subTest(strategy=strategy):
-                self.assertTrue(nd_recognize("a", machine, strategy=strategy))
+                self.assertTrue(nd_recognise("a", machine, strategy=strategy))
 
     def test_sheeptalk_machine_structure(self):
         self.assertEqual(self.machine.start_state, 0)
