@@ -5,9 +5,6 @@ State = Hashable
 Transitions = Dict[Tuple[State, str], List[State]]
 
 class NFSA:
-    """
-    Object-oriented representation of a Non-Deterministic Finite State Automaton.
-    """
     def __init__(
         self,
         states: Set[State],
@@ -27,9 +24,6 @@ class NFSA:
 def nd_recognise(
     tape: str, machine: NFSA, strategy: Literal["DFS", "BFS"] = "DFS"
 ) -> bool:
-    """
-    Executes the ND-RECOGNIZE state-space search algorithm using a double-ended queue[cite: 1].
-    """
     agenda: deque[Tuple[State, int]] = deque()
     agenda.append((machine.start_state, 0))
 
@@ -58,9 +52,6 @@ def nd_recognise(
     return False
 
 def compile_sheeptalk_nfsa() -> NFSA:
-    """
-    Compiles the textbook NFSA for 'baa*!' into the internal data structure.
-    """
     transitions = {
         (0, 'b'): [1],
         (1, 'a'): [2],
